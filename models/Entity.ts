@@ -75,3 +75,9 @@ export interface Transaction {
   createdAt: string; // ISO date string
   updatedAt: string; // ISO date string
 }
+
+export interface Overview {
+  pendingOrders: number;
+  completedOrders: number;
+  waitingOrders: number;
+}

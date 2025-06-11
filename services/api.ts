@@ -7,7 +7,7 @@ import {
   UpdateProfileDTO,
 } from '@/models/Dto';
 import { Api, ImageResponse } from '@/models/Api';
-import { Order, Product, User } from '@/models/Entity';
+import { Order, Overview, Product, User } from '@/models/Entity';
 
 export const ACCESS_TOKEN_KEY = 'ACCESS_TOKEN';
 export const USER_KEY = 'USER';
@@ -81,7 +81,7 @@ export const userService = {
     api.put<Api<User>>('/user/account', data),
   changePassword: (data: ChangePasswordDTO) =>
     api.patch<Api>('/user/account', data),
-  getDashboard: () => api.get<Api<User>>('/user/dashboard'),
+  getDashboard: () => api.get<Api<Overview>>('/user/dashboard'),
 };
 
 export const imageService = {

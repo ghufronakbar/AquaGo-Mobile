@@ -30,10 +30,10 @@ export default function ProfileScreen() {
   const { user, logout } = useAuth();
 
   const handleLogout = () => {
-    Alert.alert('Logout', 'Are you sure you want to logout?', [
-      { text: 'Cancel', style: 'cancel' },
+    Alert.alert('Keluar Akun', 'Anda yakin ingin keluar dari akun?', [
+      { text: 'Batal', style: 'cancel' },
       {
-        text: 'Logout',
+        text: 'Keluar',
         style: 'destructive',
         onPress: logout,
       },
@@ -43,26 +43,26 @@ export default function ProfileScreen() {
   const profileOptions = [
     {
       icon: Edit,
-      title: 'Edit Profile',
-      subtitle: 'Update your personal information',
+      title: 'Edit Profil',
+      subtitle: 'Perbarui informasi pribadi Anda',
       onPress: () => router.push('/(page)/edit-profile'),
     },
     {
       icon: LockIcon,
-      title: 'Change Password',
-      subtitle: 'Make sure your account is secured',
+      title: 'Ganti Password',
+      subtitle: 'Pastikan akun Anda tetap aman',
       onPress: () => router.push('/(page)/edit-password'),
     },
     {
       icon: HelpCircle,
-      title: 'Help & Support',
-      subtitle: 'Get help and contact support',
+      title: 'Bantuan & Dukungan',
+      subtitle: 'Dapatkan bantuan dan hubungi dukungan',
       onPress: () => router.push('/(page)/help-support'),
     },
     {
       icon: GlassWaterIcon,
-      title: 'About App',
-      subtitle: 'Learn more about AquaGo',
+      title: 'Tentang Aplikasi',
+      subtitle: 'Pelajari lebih lanjut tentang AquaGo',
       onPress: () => router.push('/(page)/about-app'),
     },
   ];
@@ -72,8 +72,8 @@ export default function ProfileScreen() {
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.title}>Profile</Text>
-          <Text style={styles.subtitle}>Manage your account</Text>
+          <Text style={styles.title}>Profil</Text>
+          <Text style={styles.subtitle}>Kelola akun Anda</Text>
         </View>
 
         {/* Profile Info */}
@@ -124,7 +124,7 @@ export default function ProfileScreen() {
         <View style={styles.logoutSection}>
           <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
             <LogOut size={24} color={Colors.error} />
-            <Text style={styles.logoutText}>Logout</Text>
+            <Text style={styles.logoutText}>Keluar</Text>
           </TouchableOpacity>
         </View>
 

@@ -43,6 +43,7 @@ export function Button({
     styles[`${variant}Text`],
     styles[`${size}Text`],
     textStyle,
+    styles.centered,
   ];
 
   return (
@@ -53,7 +54,9 @@ export function Button({
       activeOpacity={0.8}
     >
       {loading ? (
-        <ActivityIndicator color={variant === 'outline' ? Colors.primary : 'white'} />
+        <ActivityIndicator
+          color={variant === 'outline' ? Colors.primary : 'white'}
+        />
       ) : (
         <Text style={titleStyle}>{title}</Text>
       )}
@@ -114,5 +117,8 @@ const styles = StyleSheet.create({
   },
   largeText: {
     fontSize: 18,
+  },
+  centered: {
+    textAlign: 'center',
   },
 });

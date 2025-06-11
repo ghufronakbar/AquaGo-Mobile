@@ -28,17 +28,17 @@ export default function RegisterScreen() {
 
   const handleRegister = async () => {
     if (!name || !email || !password || !confirmPassword) {
-      Alert.alert('Error', 'Please fill in all fields');
+      Alert.alert('Kesalahan', 'Harap isi semua field');
       return;
     }
 
     if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
+      Alert.alert('Kesalahan', 'Konfirmasi password tidak sesuai');
       return;
     }
 
     if (password.length < 6) {
-      Alert.alert('Error', 'Password must be at least 6 characters');
+      Alert.alert('Kesalahan', 'Password minimal 6 karakter');
       return;
     }
 
@@ -46,7 +46,7 @@ export default function RegisterScreen() {
     try {
       await register(email, password, name);
     } catch (error: any) {
-      Alert.alert('Registration Failed', error.message);
+      Alert.alert('Registrasi Gagal', error.message);
     } finally {
       setLoading(false);
     }
@@ -70,22 +70,22 @@ export default function RegisterScreen() {
               <View style={styles.logoContainer}>
                 <Droplets size={48} color="white" />
               </View>
-              <Text style={styles.title}>Join AquaGo</Text>
-              <Text style={styles.subtitle}>Create your account</Text>
+              <Text style={styles.title}>Gabung AquaGo</Text>
+              <Text style={styles.subtitle}>Buat akun Anda</Text>
             </View>
 
             <View style={styles.formContainer}>
               <View style={styles.form}>
-                <Text style={styles.formTitle}>Get started</Text>
+                <Text style={styles.formTitle}>Mulai Sekarang</Text>
                 <Text style={styles.formSubtitle}>
-                  Fill in your details to create an account
+                  Isi data diri Anda untuk membuat akun
                 </Text>
 
                 <Input
-                  label="Full Name"
+                  label="Nama Lengkap"
                   value={name}
                   onChangeText={setName}
-                  placeholder="Enter your full name"
+                  placeholder="Masukkan nama lengkap"
                   autoCapitalize="words"
                 />
 
@@ -93,43 +93,41 @@ export default function RegisterScreen() {
                   label="Email"
                   value={email}
                   onChangeText={setEmail}
-                  placeholder="Enter your email"
+                  placeholder="Masukkan email"
                   keyboardType="email-address"
                   autoCapitalize="none"
                 />
 
                 <Input
-                  label="Password"
+                  label="Kata Sandi"
                   value={password}
                   onChangeText={setPassword}
-                  placeholder="Enter your password"
+                  placeholder="Masukkan kata sandi"
                   secureTextEntry
                 />
 
                 <Input
-                  label="Confirm Password"
+                  label="Konfirmasi Kata Sandi"
                   value={confirmPassword}
                   onChangeText={setConfirmPassword}
-                  placeholder="Confirm your password"
+                  placeholder="Konfirmasi kata sandi"
                   secureTextEntry
                 />
 
                 <Button
-                  title="Create Account"
+                  title="Buat Akun"
                   onPress={handleRegister}
                   loading={loading}
                   style={styles.registerButton}
                 />
 
                 <View style={styles.footer}>
-                  <Text style={styles.footerText}>
-                    Already have an account?{' '}
-                  </Text>
+                  <Text style={styles.footerText}>Sudah punya akun? </Text>
                   <Pressable
                     onPress={() => router.replace('/login')}
                     style={{}}
                   >
-                    <Text style={styles.linkText}>Sign in</Text>
+                    <Text style={styles.linkText}>Masuk</Text>
                   </Pressable>
                 </View>
               </View>

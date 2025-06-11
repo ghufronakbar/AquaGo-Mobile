@@ -17,11 +17,14 @@ export default function EditPasswordScreen() {
 
   const handleSave = async () => {
     if (!oldPassword || !newPassword || !confirmPassword) {
-      Alert.alert('Error', 'Please fill in all fields');
+      Alert.alert('Kesalahan', 'Harap isi semua kolom');
       return;
     }
     if (newPassword !== confirmPassword) {
-      Alert.alert('Error', 'New password and confirm password do not match');
+      Alert.alert(
+        'Kesalahan',
+        'Password baru dan konfirmasi password tidak cocok'
+      );
       return;
     }
     setSaving(true);
@@ -29,18 +32,18 @@ export default function EditPasswordScreen() {
       await userService.changePassword({ oldPassword, newPassword });
       Toast.show({
         type: 'success',
-        text1: 'Password updated!',
-        text2: 'Your password has been changed successfully.',
+        text1: 'Password berhasil diperbarui!',
+        text2: 'Password kamu berhasil diubah.',
       });
       router.back();
     } catch (e) {
       if (e instanceof AxiosError) {
         Alert.alert(
-          'Update failed',
-          e.response?.data.message || 'Could not update password.'
+          'Gagal memperbarui',
+          e.response?.data.message || 'Tidak dapat memperbarui password.'
         );
       } else {
-        Alert.alert('Update failed', 'Could not update password.');
+        Alert.alert('Gagal memperbarui', 'Tidak dapat memperbarui password.');
       }
     } finally {
       setSaving(false);
@@ -55,36 +58,36 @@ export default function EditPasswordScreen() {
       >
         <Text style={styles.title}>Edit Password</Text>
         <Text style={styles.communication}>
-          Let's keep your account secure by updating your password!
+          Yuk jaga keamanan akun kamu dengan memperbarui password!
         </Text>
         <View style={styles.containerForm}>
           <Input
-            label="Old Password"
+            label="Password Lama"
             value={oldPassword}
             onChangeText={setOldPassword}
-            placeholder="Enter your old password"
+            placeholder="Masukkan password lama"
             secureTextEntry
             autoCapitalize="none"
           />
           <Input
-            label="New Password"
+            label="Password Baru"
             value={newPassword}
             onChangeText={setNewPassword}
-            placeholder="Enter your new password"
+            placeholder="Masukkan password baru"
             secureTextEntry
             autoCapitalize="none"
           />
           <Input
-            label="Confirm Password"
+            label="Konfirmasi Password"
             value={confirmPassword}
             onChangeText={setConfirmPassword}
-            placeholder="Confirm your new password"
+            placeholder="Konfirmasi password baru"
             secureTextEntry
             autoCapitalize="none"
           />
         </View>
         <Button
-          title={saving ? 'Saving...' : 'Save Password'}
+          title={saving ? 'Menyimpan...' : 'Simpan Password'}
           onPress={handleSave}
           disabled={saving}
           style={{ marginTop: 24, marginBottom: 24 }}

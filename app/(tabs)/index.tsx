@@ -21,14 +21,19 @@ import {
   Clock,
   CheckCircle,
   TrendingUp,
+  CalendarArrowDown,
 } from 'lucide-react-native';
-import { Order, Product } from '@/models/Entity';
+import { Overview, Product } from '@/models/Entity';
 
 export default function HomeScreen() {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
-  const [recentOrders, setRecentOrders] = useState<Order[]>([]);
   const [popularProducts, setPopularProducts] = useState<Product[]>([]);
+  const [overview, setOverview] = useState<Overview>({
+    completedOrders: 0,
+    pendingOrders: 0,
+    waitingOrders: 0,
+  });
 
   useEffect(() => {
     loadDashboardData();
@@ -38,9 +43,13 @@ export default function HomeScreen() {
     try {
       setLoading(true);
       // Load recent orders and popular products
-      const [productsResponse] = await Promise.all([productService.getAll()]);
+      const [productsResponse, overviewResponse] = await Promise.all([
+        productService.getAll(),
+        userService.getDashboard(),
+      ]);
 
       setPopularProducts(productsResponse.data.data.slice(0, 3));
+      setOverview(overviewResponse.data.data);
     } catch (error) {
       console.log('Dashboard data loading error:', error);
     } finally {
@@ -62,9 +71,9 @@ export default function HomeScreen() {
         >
           <View style={styles.headerContent}>
             <View>
-              <Text style={styles.greeting}>Hello, {user?.name}!</Text>
+              <Text style={styles.greeting}>Halo, {user?.name}!</Text>
               <Text style={styles.subtitle}>
-                Ready for fresh water delivery?
+                Siap untuk pemesanan air bersih?
               </Text>
             </View>
             <View style={styles.logo}>
@@ -75,21 +84,21 @@ export default function HomeScreen() {
 
         {/* Quick Actions */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Quick Actions</Text>
+          <Text style={styles.sectionTitle}>Aksi Cepat</Text>
           <View style={styles.quickActions}>
             <TouchableOpacity
               style={styles.actionCard}
               onPress={() => router.push('/products')}
             >
               <Package size={24} color={Colors.primary} />
-              <Text style={styles.actionText}>Browse Products</Text>
+              <Text style={styles.actionText}>Lihat Produk</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.actionCard}
               onPress={() => router.push('/orders')}
             >
               <ShoppingBag size={24} color={Colors.primary} />
-              <Text style={styles.actionText}>My Orders</Text>
+              <Text style={styles.actionText}>Pesanan Saya</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -97,9 +106,9 @@ export default function HomeScreen() {
         {/* Popular Products */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Popular Products</Text>
+            <Text style={styles.sectionTitle}>Produk Populer</Text>
             <TouchableOpacity onPress={() => router.push('/products')}>
-              <Text style={styles.seeAll}>See All</Text>
+              <Text style={styles.seeAll}>Lihat Semua</Text>
             </TouchableOpacity>
           </View>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -139,22 +148,22 @@ export default function HomeScreen() {
 
         {/* Stats */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Your Activity</Text>
+          <Text style={styles.sectionTitle}>Aktivitas Anda</Text>
           <View style={styles.statsGrid}>
             <View style={styles.statCard}>
               <Clock size={24} color={Colors.warning} />
-              <Text style={styles.statNumber}>0</Text>
-              <Text style={styles.statLabel}>Pending Orders</Text>
+              <Text style={styles.statNumber}>{overview.pendingOrders}</Text>
+              <Text style={styles.statLabel}>Pesanan Pending</Text>
             </View>
             <View style={styles.statCard}>
               <CheckCircle size={24} color={Colors.success} />
-              <Text style={styles.statNumber}>0</Text>
-              <Text style={styles.statLabel}>Completed</Text>
+              <Text style={styles.statNumber}>{overview.completedOrders}</Text>
+              <Text style={styles.statLabel}>Selesai</Text>
             </View>
             <View style={styles.statCard}>
-              <TrendingUp size={24} color={Colors.primary} />
-              <Text style={styles.statNumber}>0</Text>
-              <Text style={styles.statLabel}>This Month</Text>
+              <CalendarArrowDown size={24} color={Colors.primary} />
+              <Text style={styles.statNumber}>{overview.waitingOrders}</Text>
+              <Text style={styles.statLabel}>Menunggu Pengiriman</Text>
             </View>
           </View>
         </View>

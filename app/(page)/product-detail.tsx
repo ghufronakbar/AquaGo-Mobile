@@ -49,14 +49,13 @@ export default function ProductDetailScreen() {
       setLoading(false);
     }
   };
-
   const handleAddToCart = () => {
     if (product) {
       addToCart({ productId: product.id, quantity });
       Toast.show({
         type: 'success',
-        text1: 'Added to cart',
-        text2: `${product?.name} has been added to your cart.`,
+        text1: 'Berhasil ditambahkan',
+        text2: `${product?.name} telah masuk ke keranjang Anda.`,
       });
     }
   };
@@ -74,12 +73,11 @@ export default function ProductDetailScreen() {
     return (
       <View style={styles.container}>
         <View style={styles.emptyState}>
-          <Text style={styles.emptyText}>Product not found</Text>
+          <Text style={styles.emptyText}>Produk tidak ditemukan</Text>
         </View>
       </View>
     );
   }
-
   const images =
     product.images && product.images.length > 0
       ? product.images
@@ -145,9 +143,9 @@ export default function ProductDetailScreen() {
           Rp {product.price?.toLocaleString()}
         </Text>
         <Text style={styles.productDescription}>{product.desc}</Text>
-        {/* Seller Info - Descriptive, Typography, Color */}
+        {/* Seller Info */}
         <View style={styles.sellerCard}>
-          <Text style={styles.sellerTitle}>Seller</Text>
+          <Text style={styles.sellerTitle}>Penjual</Text>
           <View style={styles.sellerRow}>
             {product.user?.picture && (
               <Image
@@ -163,21 +161,24 @@ export default function ProductDetailScreen() {
             </View>
           </View>
           <Text style={styles.sellerMeta}>
-            Joined:{' '}
+            Bergabung:{' '}
             <Text style={styles.sellerMetaValue}>
-              {new Date(product.user?.createdAt || '').toLocaleDateString()}
+              {new Date(product.user?.createdAt || '').toLocaleDateString(
+                'id-ID'
+              )}
             </Text>
           </Text>
         </View>
         <Text style={styles.createdAt}>
-          Listed on {new Date(product.createdAt).toLocaleDateString()}
+          Ditambahkan pada{' '}
+          {new Date(product.createdAt).toLocaleDateString('id-ID')}
         </Text>
         <View style={{ height: 120 }} />
       </ScrollView>
       {/* Fixed Bottom Buttons */}
       <View style={styles.bottomBar}>
         <Button
-          title="Add to Cart"
+          title="Tambah ke Keranjang"
           onPress={handleAddToCart}
           style={{ flex: 1, marginRight: 8 }}
         />

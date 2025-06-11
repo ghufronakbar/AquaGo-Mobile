@@ -7,6 +7,8 @@ import {
   Image,
   ActivityIndicator,
   Alert,
+  TouchableOpacity,
+  RefreshControl,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams } from 'expo-router';
@@ -23,6 +25,7 @@ import {
   Calendar,
   Truck,
   Receipt,
+  RefreshCw,
 } from 'lucide-react-native';
 import { router } from 'expo-router';
 import { Button } from '@/components/Button';
@@ -48,21 +51,23 @@ export default function OrderDetailScreen() {
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     if (id) fetchOrder(id as string);
   }, [id]);
 
-  const fetchOrder = async (orderId: string) => {
+  const fetchOrder = async (orderId: string, isRefresh = false) => {
     try {
-      setLoading(true);
+      if (!isRefresh) setLoading(true);
       setError('');
       const res = await orderService.getById(orderId);
       setOrder(res.data.data);
     } catch (e) {
       setError('Failed to load order.');
     } finally {
-      setLoading(false);
+      if (!isRefresh) setLoading(false);
+      if (isRefresh) setRefreshing(false);
     }
   };
 
@@ -86,6 +91,13 @@ export default function OrderDetailScreen() {
     }
   };
 
+  const onRefresh = () => {
+    if (id) {
+      setRefreshing(true);
+      fetchOrder(id as string, true);
+    }
+  };
+
   if (loading) {
     return (
       <ActivityIndicator
@@ -98,7 +110,9 @@ export default function OrderDetailScreen() {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.errorState}>
-          <Text style={styles.errorText}>{error || 'Order not found.'}</Text>
+          <Text style={styles.errorText}>
+            {error || 'Order tidak ditemukan.'}
+          </Text>
         </View>
       </SafeAreaView>
     );
@@ -107,10 +121,19 @@ export default function OrderDetailScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Detail Order</Text>
-        <Text style={styles.subtitle}>Check your past order!</Text>
+        <Text style={styles.headerTitle}>Detail Pesanan</Text>
+        <Text style={styles.subtitle}>Cek riwayat pesanan Anda!</Text>
       </View>
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={[Colors.primary]}
+          />
+        }
+      >
         <View style={styles.summaryCard}>
           <View style={styles.rowBetween}>
             <Text style={styles.orderId}>Order #{order.id.slice(0, 8)}</Text>
@@ -133,7 +156,7 @@ export default function OrderDetailScreen() {
           <View style={styles.infoRow}>
             <Calendar size={16} color={Colors.textSecondary} />
             <Text style={styles.infoText}>
-              {new Date(order.createdAt).toLocaleString()}
+              {new Date(order.createdAt).toLocaleString('id-ID')}
             </Text>
           </View>
         </View>
@@ -141,12 +164,12 @@ export default function OrderDetailScreen() {
         {order.status === 'Pending' && (
           <View style={styles.statusInfoBox}>
             <Text style={styles.statusInfoText}>
-              Please proceed to payment as soon as possible to avoid automatic
-              cancellation.
+              Silakan lakukan pembayaran secepatnya agar pesanan tidak
+              dibatalkan otomatis.
             </Text>
             <View style={{ marginTop: 12 }}>
               <Button
-                title="Proceed to Payment"
+                title="Lanjut ke Pembayaran"
                 onPress={handleProceedToPayment}
               />
             </View>
@@ -155,39 +178,50 @@ export default function OrderDetailScreen() {
         {order.status === 'Dibayar' && (
           <View style={styles.statusInfoBox}>
             <Text style={styles.statusInfoText}>
-              Waiting for shipping by seller. Please be patient while your order
-              is being processed.
+              Menunggu pengiriman dari penjual. Mohon tunggu, pesanan Anda
+              sedang diproses.
             </Text>
           </View>
         )}
         {order.status === 'Dikirim' && (
           <View style={styles.statusInfoBox}>
             <Text style={styles.statusInfoText}>
-              Your order has been shipped! Mark as completed if you have
-              received your order.
+              Pesanan Anda telah dikirim! Tandai selesai jika Anda sudah
+              menerima pesanan.
             </Text>
             <View style={{ marginTop: 12 }}>
-              <Button title="Mark as Completed" onPress={handleMarkCompleted} />
+              <Button title="Tandai Selesai" onPress={handleMarkCompleted} />
             </View>
           </View>
         )}
         {order.status === 'Selesai' && (
           <View style={styles.statusInfoBox}>
             <Text style={styles.statusInfoText}>
-              This order is completed. Thank you for shopping with us!
+              Pesanan ini sudah selesai. Terima kasih telah berbelanja!
             </Text>
           </View>
         )}
         {order.status === 'Dibatalkan' && (
           <View style={styles.statusInfoBox}>
             <Text style={styles.statusInfoText}>
-              This order has been cancelled.
+              Pesanan ini telah dibatalkan.
             </Text>
           </View>
         )}
-        <Text style={styles.sectionTitle}>Order Items</Text>
+        <Text style={styles.sectionTitle}>Daftar Item</Text>
         {order.orderItems.map((item: OrderItem) => (
-          <View key={item.id} style={styles.itemCard}>
+          <TouchableOpacity
+            key={item.id}
+            style={styles.itemCard}
+            onPress={() =>
+              router.push({
+                pathname: '/(page)/product-detail',
+                params: {
+                  id: item.productId,
+                },
+              })
+            }
+          >
             <Image
               source={{
                 uri:
@@ -223,7 +257,7 @@ export default function OrderDetailScreen() {
                 </Text>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         ))}
         <View style={styles.totalCard}>
           <Receipt

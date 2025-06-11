@@ -78,8 +78,8 @@ export default function CartScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Cart</Text>
-        <Text style={styles.subtitle}>Your saved products</Text>
+        <Text style={styles.title}>Keranjang</Text>
+        <Text style={styles.subtitle}>Produk yang tersimpan</Text>
       </View>
       <ScrollView contentContainerStyle={styles.content}>
         {cartProducts.map((product) => {
@@ -139,7 +139,7 @@ export default function CartScreen() {
                     onPress={() => removeFromCart(product.id)}
                   >
                     <Trash2 size={16} color={Colors.error} />
-                    <Text style={styles.removeText}>Remove</Text>
+                    <Text style={styles.removeText}>Hapus</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -149,8 +149,8 @@ export default function CartScreen() {
         {cartProducts.length === 0 && (
           <View style={styles.emptyState}>
             <ShoppingBag size={64} color={Colors.textLight} />
-            <Text style={styles.emptyText}>Cart empty</Text>
-            <Text style={styles.emptySubtext}>Let's get some products</Text>
+            <Text style={styles.emptyText}>Keranjang kosong</Text>
+            <Text style={styles.emptySubtext}>Yuk belanja produk dulu</Text>
           </View>
         )}
         <View style={{ height: 120 }} />

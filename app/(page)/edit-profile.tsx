@@ -34,14 +34,14 @@ export default function EditProfileScreen() {
     if (fromCamera) {
       permissionResult = await ImagePicker.requestCameraPermissionsAsync();
       if (permissionResult.status !== 'granted') {
-        Alert.alert('Permission required', 'Camera permission is required.');
+        Alert.alert('Izin diperlukan', 'Izin kamera diperlukan.');
         return;
       }
     } else {
       permissionResult =
         await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (permissionResult.status !== 'granted') {
-        Alert.alert('Permission required', 'Gallery permission is required.');
+        Alert.alert('Izin diperlukan', 'Izin galeri diperlukan.');
         return;
       }
     }
@@ -63,7 +63,6 @@ export default function EditProfileScreen() {
       uploadImage(result.assets[0].uri);
     }
   };
-
   const uploadImage = async (uri: string) => {
     try {
       setUploading(true);
@@ -76,7 +75,7 @@ export default function EditProfileScreen() {
       const response = await imageService.upload(formData);
       setPicture(response.data.data.secure_url);
     } catch (e) {
-      Alert.alert('Upload failed', 'Could not upload image.');
+      Alert.alert('Gagal mengunggah', 'Tidak dapat mengunggah gambar.');
     } finally {
       setUploading(false);
     }
@@ -89,12 +88,12 @@ export default function EditProfileScreen() {
       updateUser({ name, email, picture });
       Toast.show({
         type: 'success',
-        text1: 'Profile updated!',
-        text2: 'Successfull to update profile',
+        text1: 'Profil diperbarui!',
+        text2: 'Berhasil memperbarui profil',
       });
       router.back();
     } catch (e) {
-      Alert.alert('Update failed', 'Could not update profile.');
+      Alert.alert('Gagal memperbarui', 'Tidak dapat memperbarui profil.');
     } finally {
       setSaving(false);
     }
@@ -106,8 +105,10 @@ export default function EditProfileScreen() {
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="handled"
       >
-        <Text style={styles.title}>Edit Profile</Text>
-        <Text style={styles.communication}>Let's update your profile for a better experience!</Text>
+        <Text style={styles.title}>Edit Profil</Text>
+        <Text style={styles.communication}>
+          Yuk perbarui profil kamu untuk pengalaman yang lebih baik!
+        </Text>
         <View style={styles.avatarContainer}>
           {picture ? (
             <Image
@@ -152,23 +153,23 @@ export default function EditProfileScreen() {
         </View>
         <View style={styles.containerForm}>
           <Input
-            label="Name"
+            label="Nama"
             value={name}
             onChangeText={setName}
-            placeholder="Your name"
+            placeholder="Nama kamu"
             autoCapitalize="words"
           />
           <Input
             label="Email"
             value={email}
             onChangeText={setEmail}
-            placeholder="Your email"
+            placeholder="Email kamu"
             keyboardType="email-address"
             autoCapitalize="none"
           />
         </View>
         <Button
-          title={saving ? 'Saving...' : 'Save Changes'}
+          title={saving ? 'Menyimpan...' : 'Simpan Perubahan'}
           onPress={handleSave}
           disabled={saving}
           style={{ marginTop: 24, marginBottom: 24 }}

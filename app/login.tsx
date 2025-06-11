@@ -26,7 +26,7 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     if (!email || !password) {
-      Alert.alert('Error', 'Please fill in all fields');
+      Alert.alert('Kesalahan', 'Harap isi semua field');
       return;
     }
 
@@ -34,7 +34,7 @@ export default function LoginScreen() {
     try {
       await login(email, password);
     } catch (error: any) {
-      Alert.alert('Login Failed', error.message);
+      Alert.alert('Gagal Login', error.message);
     } finally {
       setLoading(false);
     }
@@ -59,47 +59,49 @@ export default function LoginScreen() {
                 <Droplets size={48} color="white" />
               </View>
               <Text style={styles.title}>AquaGo</Text>
-              <Text style={styles.subtitle}>Fresh water delivery</Text>
+              <Text style={styles.subtitle}>
+                Layanan pengantaran air bersih
+              </Text>
             </View>
 
             <View style={styles.formContainer}>
               <View style={styles.form}>
-                <Text style={styles.formTitle}>Welcome back</Text>
+                <Text style={styles.formTitle}>Selamat datang kembali</Text>
                 <Text style={styles.formSubtitle}>
-                  Sign in to your account to continue
+                  Masuk ke akun Anda untuk melanjutkan
                 </Text>
 
                 <Input
                   label="Email"
                   value={email}
                   onChangeText={setEmail}
-                  placeholder="Enter your email"
+                  placeholder="Masukkan email"
                   keyboardType="email-address"
                   autoCapitalize="none"
                 />
 
                 <Input
-                  label="Password"
+                  label="Kata Sandi"
                   value={password}
                   onChangeText={setPassword}
-                  placeholder="Enter your password"
+                  placeholder="Masukkan kata sandi"
                   secureTextEntry
                 />
 
                 <Button
-                  title="Sign In"
+                  title="Masuk"
                   onPress={handleLogin}
                   loading={loading}
                   style={styles.loginButton}
                 />
 
                 <View style={styles.footer}>
-                  <Text style={styles.footerText}>Don't have an account? </Text>
+                  <Text style={styles.footerText}>Belum punya akun? </Text>
                   <Pressable
                     onPress={() => router.replace('/register')}
                     style={{}}
                   >
-                    <Text style={styles.linkText}>Sign up</Text>
+                    <Text style={styles.linkText}>Daftar</Text>
                   </Pressable>
                 </View>
               </View>

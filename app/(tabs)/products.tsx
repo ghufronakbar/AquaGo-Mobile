@@ -58,8 +58,8 @@ export default function ProductsScreen() {
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.title}>Products</Text>
-        <Text style={styles.subtitle}>Fresh water for every need</Text>
+        <Text style={styles.title}>Produk</Text>
+        <Text style={styles.subtitle}>Air bersih untuk setiap kebutuhan</Text>
       </View>
 
       {/* Search */}
@@ -68,7 +68,7 @@ export default function ProductsScreen() {
           <Search size={20} color={Colors.textSecondary} />
           <TextInput
             style={styles.searchInput}
-            placeholder="Search products..."
+            placeholder="Cari produk..."
             value={searchQuery}
             onChangeText={setSearchQuery}
             placeholderTextColor={Colors.textLight}
@@ -129,11 +129,11 @@ export default function ProductsScreen() {
         {filteredProducts.length === 0 && (
           <View style={styles.emptyState}>
             <Box size={64} color={Colors.textLight} />
-            <Text style={styles.emptyText}>No products found</Text>
+            <Text style={styles.emptyText}>Produk tidak ditemukan</Text>
             <Text style={styles.emptySubtext}>
               {searchQuery
-                ? 'Try a different search term'
-                : 'Products will appear here'}
+                ? 'Coba gunakan kata kunci pencarian lain'
+                : 'Produk akan ditampilkan di sini'}
             </Text>
           </View>
         )}

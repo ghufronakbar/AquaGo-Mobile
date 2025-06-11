@@ -45,14 +45,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          title: 'Beranda',
           tabBarIcon: ({ size, color }) => <Home size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="products"
         options={{
-          title: 'Products',
+          title: 'Produk',
           tabBarIcon: ({ size, color }) => (
             <Package size={size} color={color} />
           ),
@@ -61,7 +61,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="cart"
         options={{
-          title: 'Cart',
+          title: 'Keranjang',
           tabBarIcon: ({ size, color }) => (
             <ShoppingCart size={size} color={color} />
           ),
@@ -70,7 +70,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="orders"
         options={{
-          title: 'Orders',
+          title: 'Pesanan',
           tabBarIcon: ({ size, color }) => (
             <ShoppingBag size={size} color={color} />
           ),
@@ -79,7 +79,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="profile"
         options={{
-          title: 'Profile',
+          title: 'Profil',
           tabBarIcon: ({ size, color }) => <User size={size} color={color} />,
         }}
       />

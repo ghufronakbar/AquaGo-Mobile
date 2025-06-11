@@ -88,19 +88,19 @@ export default function OrdersScreen() {
 
   const handleCompleteOrder = async (orderId: string) => {
     Alert.alert(
-      'Complete Order',
-      'Are you sure you want to mark this order as completed?',
+      'Selesaikan Pesanan',
+      'Apakah Anda yakin ingin menandai pesanan ini sebagai selesai?',
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: 'Batal', style: 'cancel' },
         {
-          text: 'Complete',
+          text: 'Selesai',
           onPress: async () => {
             try {
               setLoading(true);
               await orderService.markCompleted(orderId);
               loadOrders();
             } catch (error) {
-              Alert.alert('Error', 'Failed to complete order');
+              Alert.alert('Kesalahan', 'Gagal menyelesaikan pesanan');
             }
           },
         },
@@ -109,22 +109,26 @@ export default function OrdersScreen() {
   };
 
   const handleCancelOrder = async (orderId: string) => {
-    Alert.alert('Cancel Order', 'Are you sure you want to cancel this order?', [
-      { text: 'No', style: 'cancel' },
-      {
-        text: 'Yes, Cancel',
-        style: 'destructive',
-        onPress: async () => {
-          try {
-            setLoading(true);
-            await orderService.cancel(orderId);
-            loadOrders();
-          } catch (error) {
-            Alert.alert('Error', 'Failed to cancel order');
-          }
+    Alert.alert(
+      'Batalkan Pesanan',
+      'Anda yakin ingin membatalkan pesanan ini?',
+      [
+        { text: 'Tidak', style: 'cancel' },
+        {
+          text: 'Ya, Batalkan',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              setLoading(true);
+              await orderService.cancel(orderId);
+              loadOrders();
+            } catch (error) {
+              Alert.alert('Kesalahan', 'Gagal membatalkan pesanan');
+            }
+          },
         },
-      },
-    ]);
+      ]
+    );
   };
 
   if (loading) {
@@ -135,8 +139,8 @@ export default function OrdersScreen() {
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.title}>My Orders</Text>
-        <Text style={styles.subtitle}>Track your water deliveries</Text>
+        <Text style={styles.title}>Pesanan Saya</Text>
+        <Text style={styles.subtitle}>Lacak pengiriman air Anda</Text>
       </View>
 
       {/* Orders List */}
@@ -164,7 +168,7 @@ export default function OrdersScreen() {
             <View style={styles.orderHeader}>
               <View style={styles.orderInfo}>
                 <Text style={styles.orderId}>
-                  Order #{order.id?.slice(0, 8)}
+                  Pesanan #{order.id?.slice(0, 8)}
                 </Text>
                 <View style={styles.statusContainer}>
                   {getStatusIcon(order.status)}
@@ -204,7 +208,7 @@ export default function OrdersScreen() {
               {order.orderItems?.map((item: any, index: number) => (
                 <View key={index} style={styles.orderItem}>
                   <Text style={styles.itemName}>
-                    {item.product?.name || 'Product'}
+                    {item.product?.name || 'Produk'}
                   </Text>
                   <Text style={styles.itemQuantity}>{item.quantity} x</Text>
                   <Text style={styles.itemTotal}>
@@ -219,7 +223,7 @@ export default function OrdersScreen() {
             {order.status === 'Dikirim' && (
               <View style={styles.orderActions}>
                 <Button
-                  title="Mark as Completed"
+                  title="Tandai Selesai"
                   onPress={() => handleCompleteOrder(order.id)}
                   variant="primary"
                   size="small"
@@ -230,7 +234,7 @@ export default function OrdersScreen() {
             {order.status === 'Pending' && (
               <View style={styles.orderActions}>
                 <Button
-                  title="Cancel Order"
+                  title="Batalkan Pesanan"
                   onPress={() => handleCancelOrder(order.id)}
                   variant="outline"
                   size="small"
@@ -243,9 +247,9 @@ export default function OrdersScreen() {
         {orders.length === 0 && (
           <View style={styles.emptyState}>
             <Package size={64} color={Colors.textLight} />
-            <Text style={styles.emptyText}>No orders yet</Text>
+            <Text style={styles.emptyText}>Belum ada pesanan</Text>
             <Text style={styles.emptySubtext}>
-              Your orders will appear here once you make a purchase
+              Pesanan Anda akan muncul di sini setelah Anda melakukan pemesanan
             </Text>
           </View>
         )}

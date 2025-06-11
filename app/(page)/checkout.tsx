@@ -168,10 +168,12 @@ export default function CheckoutScreen() {
       setLocationLoading(false);
     }
   };
-
   const handleProceed = async () => {
     if (!location || !address) {
-      Alert.alert('Error', 'Please pick a location and enter address.');
+      Alert.alert(
+        'Kesalahan',
+        'Silakan pilih lokasi dan isi alamat pengiriman.'
+      );
       return;
     }
     setSaving(true);
@@ -187,8 +189,8 @@ export default function CheckoutScreen() {
       });
       Toast.show({
         type: 'success',
-        text1: 'Order placed!',
-        text2: 'Your order has been created.',
+        text1: 'Pesanan berhasil!',
+        text2: 'Pesanan kamu telah dibuat.',
       });
       clearCart();
       if (res.data.data.mtRedirectUrl) {
@@ -201,7 +203,7 @@ export default function CheckoutScreen() {
         });
       }
     } catch (e) {
-      Alert.alert('Checkout failed', 'Could not place order.');
+      Alert.alert('Checkout gagal', 'Tidak dapat melakukan pemesanan.');
     } finally {
       setSaving(false);
     }
@@ -221,7 +223,7 @@ export default function CheckoutScreen() {
       <View style={styles.header}>
         <Text style={styles.title}>Checkout</Text>
         <Text style={styles.subtitle}>
-          Review your cart and complete your order
+          Cek kembali keranjangmu dan selesaikan pesanan
         </Text>
       </View>
       <ScrollView contentContainerStyle={styles.content}>
@@ -247,7 +249,7 @@ export default function CheckoutScreen() {
                   {(product.price * (cartItem?.quantity || 0)).toLocaleString()}
                 </Text>
                 <Text style={styles.productQuantity}>
-                  Quantity: {cartItem?.quantity}
+                  Jumlah: {cartItem?.quantity}
                 </Text>
                 <View style={styles.sellerRow}>
                   {product.user?.picture ? (
@@ -271,10 +273,10 @@ export default function CheckoutScreen() {
           <Text style={styles.summaryValue}>Rp {total.toLocaleString()}</Text>
         </View>
         <Input
-          label="Address"
+          label="Alamat"
           value={address}
           onChangeText={setAddress}
-          placeholder="Enter your delivery address"
+          placeholder="Masukkan alamat pengiriman"
           multiline
           numberOfLines={3}
           style={styles.textarea}
@@ -282,7 +284,7 @@ export default function CheckoutScreen() {
         <TouchableOpacity style={styles.mapButton} onPress={handlePickLocation}>
           <MapPin size={20} color={Colors.primary} />
           <Text style={styles.mapButtonText}>
-            {location ? 'Change Location' : 'Pick Location on Map'}
+            {location ? 'Ganti Lokasi' : 'Pilih Lokasi pada Peta'}
           </Text>
         </TouchableOpacity>
         <Modal
@@ -292,7 +294,7 @@ export default function CheckoutScreen() {
         >
           <View style={styles.mapModalContainer}>
             <Text style={styles.mapInfo}>
-              Tap to pick a location on the map
+              Ketuk untuk memilih lokasi pada peta
             </Text>
             <MapView
               style={styles.map}
@@ -308,12 +310,12 @@ export default function CheckoutScreen() {
               {location && <Marker coordinate={location} />}
             </MapView>
             <Button
-              title="Choose Current Location"
+              title="Gunakan Lokasi Saat Ini"
               onPress={handleChooseCurrentLocation}
               style={styles.mapCurrentButton}
             />
             <Button
-              title="Done"
+              title="Selesai"
               onPress={() => setModalVisible(false)}
               style={styles.mapDoneButton}
             />
@@ -332,7 +334,7 @@ export default function CheckoutScreen() {
       </ScrollView>
       <View style={styles.bottomBar}>
         <Button
-          title={saving ? 'Processing...' : 'Proceed to Checkout'}
+          title={saving ? 'Memproses...' : 'Lanjutkan Checkout'}
           onPress={handleProceed}
           disabled={saving || !location || !address || cart.length === 0}
           style={{ flex: 1 }}
